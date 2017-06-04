@@ -1,0 +1,18 @@
+{extend name="share:layout"/}
+{block name="title"}控制器 - 步骤1{/block}
+{block name="body"}
+<h3>控制器 - 步骤1</h3>
+<form action="{:url('page_controller_step2')}" method="get">
+选择表：
+<select name="table">
+<option value=""></option>
+{volist name="tables" id="vo"}
+<option value="{$vo}" {eq name="Think.get.table" value="$vo"}selected{/eq}>{$vo}</option>
+{/volist}
+</select>
+<br><br>
+<input type="submit" value="提交">
+</form>
+
+
+{/block}

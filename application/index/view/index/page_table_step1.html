@@ -1,0 +1,24 @@
+{extend name="share:layout"/}
+{block name="title"}管理表格生成 - 步骤1{/block}
+
+{block name="body"}
+<h3>管理表格生成 - 步骤1<small>对应控制器中的(manager)方法</small></h3>
+<form action="{:url('page_table_step2')}" method="post">
+选择表：
+<select name="table">
+<option value=""></option>
+{volist name="tables" id="vo"}
+<option value="{$vo}" {eq name="Think.get.table" value="$vo"}selected{/eq}>{$vo}</option>
+{/volist}
+</select>
+<br><br>选择表单样式：
+<br>
+<input type="checkbox" name="style[]" id="tbtw" value="table-striped"><label for="tbtw">条纹</label>
+<input type="checkbox" name="style[]" id="tbbk" value="table-bordered"><label for="tbbk">边框</label>
+<input type="checkbox" name="style[]" id="tbxt" value="table-hover"><label for="tbxt">鼠标悬停</label>
+<input type="checkbox" name="style[]" id="tbjs" value="table-condensed"><label for="tbjs">紧缩</label>
+<br><br>
+<input type="submit" value="提交">
+</form>
+
+{/block}

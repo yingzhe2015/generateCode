@@ -1,0 +1,32 @@
+{extend name="share:layout"/}
+{block name="title"}模型 - 步骤2 - 完成{/block}
+
+{block name="body"}
+<h3>模型生成 - 步骤2 - 完成</h3>
+
+<br>
+<font color="red" size="-2">{$msg ?? ''}</font><br>
+<pre>
+namespace app\index\model;
+
+use think\Model;
+
+class {$Think.get.table|ucfirst} extends Model
+{
+    {php}
+    
+    if(isset($softdelete)&&$softdelete){
+    	echo 'use SoftDelete;';
+    	echo "protected $deleteTime = 'delete_time';";
+    }
+    if(isset($autotime)&&$autotime){
+    	echo 'protected $autoWriteTimestamp = true;';
+    }
+    
+    
+    {/php}
+}
+
+</pre>
+
+{/block}

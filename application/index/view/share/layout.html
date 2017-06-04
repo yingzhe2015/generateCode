@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>TP5代码生成工具-{block name="title"}{/block}</title>
+  {css href="/public/static/css/bootstrap.css,/public/static/css/default.css"/}
+</head>
+<body>
+
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<nav class="navbar navbar-default navbar-inverse navbar-static-top" role="navigation">
+				<div class="navbar-header">
+					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="{:url('/')}">TP5代码生成工具</a>
+				</div>
+				
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li>
+							 <a href="{:url('index/page_model_step1')}">模型</a>
+						</li>
+						<li>
+							 <a href="{:url('index/page_controller_step1')}">控制器</a>
+						</li>
+						<li>
+							 <a href="{:url('index/page_validata_step1')}">验证器</a>
+						</li>
+						<li  class="dropdown">
+							 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">表单生成器<span class="caret"></span></a>
+							 <ul class="dropdown-menu">
+							 	<li><a href="{:url('page_form_step1')}">编辑表单生成</a></li>
+							 	<li class="divider"></li>
+							 	<li><a href="{:url('page_table_step1')}">管理表格生成</a></li>
+							 </ul>
+						</li>
+						<li>
+							 <a href="{:url('index/index')}">帮助</a>
+						</li>
+						<li>
+							 <a href="#" id="version"></a>
+						</li>
+					</ul>
+					
+
+					<!-- ul class="nav navbar-nav navbar-right">
+						<li>
+							 <a href="#">Link</a>
+						</li>
+						<li class="dropdown">
+							 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
+							<ul class="dropdown-menu">
+								<li>
+									 <a href="#">Action</a>
+								</li>
+								<li>
+									 <a href="#">Another action</a>
+								</li>
+								<li>
+									 <a href="#">Something else here</a>
+								</li>
+								<li class="divider">
+								</li>
+								<li>
+									 <a href="#">Separated link</a>
+								</li>
+							</ul>
+						</li>
+					</ul-->
+				</div>
+				
+			</nav>
+		</div>
+	</div>
+ 
+ <div class="container">	
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+		{block name="body"}{/block}
+		
+		</div>
+		<div class="col-md-12 column"><br><br>
+			<a href="" id="adlink" target="_blank"><img id="adimg" src=""></a><br>
+			<div id="ad2"></div>
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-12 column" align="center">
+		<br><br>&copy;2017 本软件为自由软件 <a href="http://tp.azhe35.cn" target="_blank">主页</a> <a href="http://tp.azhe35.cn/juankuan.html" target="_blank"><font color="#ccc">为项目捐款</font></a><br> <font color="#ccc">强烈建议您使用Chrome浏览器</font>
+		<div style="display:none">
+			<script language="javascript" type="text/javascript" src="//js.users.51.la/19203976.js"></script>
+			<noscript><a href="//www.51.la/?19203976" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="//img.users.51.la/19203976.asp" style="border:none" /></a></noscript>
+		</div>
+		</div>
+	</div>
+</div>
+
+ 
+
+  
+</body>
+{js href="/public/static/js/jquery.min.js,/public/static/js/bootstrap.js,/public/static/js/default.js"/}
+
+{block name="script"}{/block}
+
+</html>

@@ -1,0 +1,41 @@
+{extend name="share:layout"/}
+{block name="title"}验证器 - 步骤3 - 完成{/block}
+{block name="body"}
+<h3>验证器- 步骤3 - 完成</h3>
+<br>
+<pre>
+namespace app\index\validate;
+
+use think\Validate;
+
+class {$table|ucfirst} extends Validate
+{
+    protected $rule = [
+    <?php foreach($rs as $key=>$val){ ?>
+        '{$key}'  =>  '<?php echo implode('|',$val) ?>',
+    <?php } ?>
+    ];
+
+    protected $message = [
+     <?php foreach($ms as $key=>$val){ ?>
+        '{$key}'  =>  '{$val}',
+     <?php } ?>
+    ];
+
+	<?php
+	 $fields = "";
+	 foreach($cls as $c){ 
+		if($c['Key']!='PRI')
+			$fields.= "'".$c['Field']."',"; 
+	} 
+	 $fields = trim($fields,',');
+	?>
+
+    protected $scene = [
+        'add'   =>  [{$fields}],
+        'edit'  =>  [{$fields}],
+    ];
+}
+
+</pre>
+{/block}

@@ -1,0 +1,16 @@
+{extend name="share:layout"/}
+{block name="title"}验证器 - 步骤1{/block}
+{block name="body"}
+<h2>验证器 - 步骤1</h2>
+<form action="{:url('page_validata_step2')}" method="get">
+选择表：
+<select name="table">
+<option value=""></option>
+{volist name="tables" id="vo"}
+<option value="{$vo}" {eq name="Think.get.table" value="$vo"}selected{/eq}>{$vo}</option>
+{/volist}
+</select>
+<br><br>
+<input type="submit" value="下一步">
+</form>
+{/block}

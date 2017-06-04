@@ -1,0 +1,26 @@
+{extend name="share:layout"/}
+{block name="title"}模型 - 步骤1{/block}
+
+{block name="body"}
+<h3>模型生成 - 步骤1</h3>
+<form action="{:url('page_model_step2')}" method="get">
+选择表：
+<select name="table">
+<option value=""></option>
+{volist name="tables" id="vo"}
+<option value="{$vo}" {eq name="Think.get.table" value="$vo"}selected{/eq}>{$vo}</option>
+{/volist}
+</select>
+
+<br><br>
+<input type="checkbox" name="autotimpspan" id="autotimpspan"><label for="autotimpspan">自动生成创建修改时间</label>
+
+<br>
+<input type="checkbox" name="softdelete" id="softdelete"><label for="softdelete">软删除</label>
+
+<br><br>
+<input type="submit" value="提交">
+</form>
+
+
+{/block}

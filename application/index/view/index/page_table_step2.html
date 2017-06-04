@@ -1,0 +1,40 @@
+{extend name="share:layout"/}
+{block name="title"}管理表格生成 - 步骤2 - 完成{/block}
+
+{block name="body"}
+<h3>管理表格生成 - 完成<small>对应控制器中的(manager)方法</small></h3>
+<br>
+<textarea id="code" name="code" class="form-control" style="height:360px;" readonly="readonly" onclick="code.focus();code.select();">
+	<table class="table {$styles}">
+      <thead>
+        <tr>
+        {volist name="cls" id="vi"}
+          <th>{$vi.Comment ?: $vi.Field}</th>
+        {/volist}
+          <th>管理</th>
+        </tr>        
+      </thead>
+      <tbody>
+      {literal}{volist name="list" id="vo"}{/literal}
+        <tr>
+        {volist name="cls" id="vi"}
+        	{eq name="$vi.Field" value="$k"}
+          		<th scope="row">{literal}{$vo.{/literal}{$k}}</th>
+          	{else/}
+          		<td>{literal}{$vo.{/literal}{$vi.Field}}</td>
+          	{/eq}
+          	    
+        {/volist}
+        		<td align="center">
+          	    <a href="{literal}{:url('edit',[{/literal}'{$k|strtolower}'{literal}=>$vo.{/literal}{$k}])}" class="btn btn-primary btn-sm">编辑</a>
+       			<a href="{literal}{:url('delete',[{/literal}'{$k|strtolower}'{literal}=>$vo.{/literal}{$k}])}" class="btn btn-danger btn-sm" onclick="return confirm('确定要删除该记录吗？');">删除</a>
+       			</td>
+        </tr>
+       {literal}{/volist}{/literal}
+       
+      </tbody>
+    </table>
+</textarea>
+<a href="javascript:var h=$('#code').val();$('#run').html(h);$('#run').toggle();">查看效果</a>
+<div id="run" style="display:none;"></div>
+{/block}

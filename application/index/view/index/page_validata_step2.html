@@ -1,0 +1,62 @@
+{extend name="share:layout"/}
+{block name="title"}验证器 - 步骤2{/block}
+{block name="body"}
+<style>
+.a li{padding:15px;}
+.a li:hover{background:#C2DFFF;}
+</style>
+<h2>验证器-步骤2</h2>
+<form action="{:url('page_validata_step3')}" method="post">
+<input type="hidden" name="table" value="{$Think.get.table}">
+<ul class="a">
+{volist name="cls" id="vo"}
+
+	{neq name="$vo.Key" value="PRI"}
+	<li title="{$vo.Comment}">	
+	<h4>{$vo.Field}	</h4>
+	<input type="checkbox" name="{$vo.Field}_require" id="{$vo.Field}_require"><label for="{$vo.Field}_require">必填</label>
+	<input type="checkbox" name="{$vo.Field}_number" id="{$vo.Field}_number"><label for="{$vo.Field}_number">整数</label>
+	<input type="checkbox" name="{$vo.Field}_float" id="{$vo.Field}_float"><label for="{$vo.Field}_float">小数</label>
+	<input type="checkbox" name="{$vo.Field}_boolean" id="{$vo.Field}_boolean"><label for="{$vo.Field}_boolean">布尔</label>
+	<input type="checkbox" name="{$vo.Field}_email" id="{$vo.Field}_email"><label for="{$vo.Field}_email">email</label>
+	<input type="checkbox" name="{$vo.Field}_accepted" id="{$vo.Field}_accepted"><label for="{$vo.Field}_accepted">yes/no</label>
+	<input type="checkbox" name="{$vo.Field}_date" id="{$vo.Field}_date"><label for="{$vo.Field}_date">日期</label>	
+	<input type="checkbox" name="{$vo.Field}_alpha" id="{$vo.Field}_alpha"><label for="{$vo.Field}_alpha">字母</label>
+	<input type="checkbox" name="{$vo.Field}_array" id="{$vo.Field}_array"><label for="{$vo.Field}_array">数组</label>	
+	<input type="checkbox" name="{$vo.Field}_alphaNum" id="{$vo.Field}_alphaNum"><label for="{$vo.Field}_alphaNum">字母数字</label>	
+	<input type="checkbox" name="{$vo.Field}_alphaDash" id="{$vo.Field}_alphaDash"><label for="{$vo.Field}_alphaDash">字母数字-_</label>	
+	<input type="checkbox" name="{$vo.Field}_activeUrl" id="{$vo.Field}_activeUrl"><label for="{$vo.Field}_activeUrl">域名/ip</label>
+	<input type="checkbox" name="{$vo.Field}_url" id="{$vo.Field}_url"><label for="{$vo.Field}_url">url</label>
+	<input type="checkbox" name="{$vo.Field}_ip" id="{$vo.Field}_ip"><label for="{$vo.Field}_ip">ip</label>
+	&nbsp;&nbsp;<label for="{$vo.Field}_regex">正则：</label>	<input type="text" name="{$vo.Field}_regex" id="{$vo.Field}_regex" style="width:120px">
+	
+	&nbsp;&nbsp;<br>	
+	<label for="{$vo.Field}_confirm">和字段</label>
+	<select name="{$vo.Field}_confirm" id="{$vo.Field}_confirm">
+		<option value=""></option>
+	{volist name="cls" id="vi"}	
+		<option value="{$vi.Field}">{$vi.Field}</option>
+	{/volist}
+	</select>
+	<label for="{$vo.Field}_confirm">相同</label>
+	&nbsp;&nbsp;
+	
+	<label for="{$vo.Field}_max">最大值：</label><input type="number" name="{$vo.Field}_max" id="{$vo.Field}_max" style="width:50px">
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<label for="{$vo.Field}_min">最小值：</label><input type="number" name="{$vo.Field}_min" id="{$vo.Field}_min" style="width:50px">
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<label for="{$vo.Field}_before">时间之前：</label><input type="date" name="{$vo.Field}_before" id="{$vo.Field}_before" style="width:130px">
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<label for="{$vo.Field}_after">时间之后：</label><input type="date" name="{$vo.Field}_after" id="{$vo.Field}_after" style="width:130px">
+	
+		
+	</li>
+	{/neq}
+	
+	
+{/volist}
+</ul>
+<br><br>
+<input type="submit" value="生成代码">
+</form>
+{/block}
