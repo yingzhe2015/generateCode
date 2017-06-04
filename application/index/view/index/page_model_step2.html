@@ -16,8 +16,8 @@ class {$Think.get.table|ucfirst} extends Model
     {php}
     
     if(isset($softdelete)&&$softdelete){
-    	echo 'use SoftDelete;';
-    	echo "protected $deleteTime = 'delete_time';";
+    	echo 'use SoftDelete;';    	
+    	echo "protected \$deleteTime = 'delete_time';";    	
     }
     if(isset($autotime)&&$autotime){
     	echo 'protected $autoWriteTimestamp = true;';

@@ -36,11 +36,11 @@ class Index extends Base
             $msg = '';
             
             foreach ($cls as $c){
-                if($c=='create_time')
+                if($c['Field']=='create_time'&&!$istimestartfiled)
                     $istimestartfiled= true;
-                if($c=='update_time')
+                if($c['Field']=='update_time'&&!$istimeendfiled)
                     $istimeendfiled= true;
-                if($c=='delete_time')
+                if($c['Field']=='delete_time'&&!$issoftdelete)
                     $issoftdelete = true;
             }
             
