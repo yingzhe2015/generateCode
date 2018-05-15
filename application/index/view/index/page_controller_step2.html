@@ -7,23 +7,39 @@
 <pre>
 
 namespace app\index\controller;
-
 use think\Controller;
-use think\Db;
 
 class {$Think.get.table|ucfirst} extends Controller
 {
     public function manager($keyword='')
     {
-    	$wheresql = '1=1';
-    	if($keyword!='')
-    		$wheresql .= "{$wheresql}";
-    		
-    	$list = Db::name('{$tb}')->where($wheresql)->paginate(25);
-    	$page = $list->render();
+    	${$tb}=model('{$tb}');
+    	$list = ${$tb}->getByKeyword($keyword);
     	
     	$this->assign('list', $list);
-	$this->assign('page', $page);
+		$this->assign('page', $list->render());
+
+    	return view();
+    }
+    
+    public function getlist($page=1,$pagesize=10,$order='')
+    {
+    	${$tb}=model('{$tb}');
+    	$list = ${$tb}->getByPage('',$order,$pagesize,'',false);
+    	
+    	$this->assign('list', $list);
+		$this->assign('page', $list->render());
+
+    	return view();
+    }
+    
+    public function getTrashedList($page=1,$pagesize=10,$order='')
+    {
+    	${$tb}=model('{$tb}');
+    	$list = ${$tb}->getByPage('',$order,$pagesize,'',true);
+    	
+    	$this->assign('list', $list);
+		$this->assign('page', $list->render());
 
     	return view();
     }
@@ -35,14 +51,16 @@ class {$Think.get.table|ucfirst} extends Controller
     
     public function edit(${$key|strtolower}){
     
-    	$m = Db::name('{$tb}')->find(${$key|strtolower});
+    	${$tb}=model('{$tb}');
+    	$m = ${$tb}->find(${$key|strtolower});
     	$this->assign('m', $m);
     	return view();
     }
     
-    public function delete(${$key|strtolower}){
+    public function delete(${$key|strtolower},$istrue=false){
     
-    	if(Db::name('{$tb}')->delete(${$key|strtolower})){
+    	${$tb}=model('{$tb}');
+    	if(${$tb}->delete(${$key|strtolower},$istrue)){
     		$this->success('删除成功！','manager');
     	}else{
     		$this->error('删除失败！');
@@ -52,12 +70,13 @@ class {$Think.get.table|ucfirst} extends Controller
     public function save(){
     	
     	$data=input('post.');
+    	${$tb}=model('{$tb}');
     	if($data['{$key}']==''){
     		$result = $this->validate($data,'{$tb|ucfirst}.add');
 			if(true !== $result){
 			    $this->error($result);
 			}else{
-				Db::name('{$tb}')->insert($data);
+				${$tb}->add($data);
 				$this->success('添加成功！','manager');
 			}
     	}else{
@@ -65,9 +84,7 @@ class {$Think.get.table|ucfirst} extends Controller
 			if(true !== $result){
 			    $this->error($result);
 			}else{
-    			Db::name('{$tb}')
-			    	->where('{$key}', $data['{$key}'])
-			    	->update($data);
+    			${$tb}->update($data, $data['{$key}']);
     			$this->success('更新成功！','manager');
     		}
     	

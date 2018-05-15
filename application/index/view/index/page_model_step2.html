@@ -5,26 +5,121 @@
 <h3>模型生成 - 步骤2 - 完成</h3>
 
 <br>
-<font color="red" size="-2">{$msg ?? ''}</font><br>
+<font color="red" size="2">{$msg ?? ''}</font><br>
 <pre>
 namespace app\index\model;
 
 use think\Model;
+{php}
+if(isset($softdelete)&&$softdelete){
+echo 'use traits\model\SoftDelete;';
+}
+{/php}
 
 class {$Think.get.table|ucfirst} extends Model
 {
+	protected $table = '{$Think.get.table}';
+	protected $pk = '{$pk}';
+
     {php}
-    
     if(isset($softdelete)&&$softdelete){
-    	echo 'use SoftDelete;';    	
-    	echo "protected \$deleteTime = 'delete_time';";    	
-    }
+    	echo 'use SoftDelete;';
+    	echo "protected \$deleteTime = '$delfield';";
+    }    
     if(isset($autotime)&&$autotime){
-    	echo 'protected $autoWriteTimestamp = true;';
+    	echo 'protected $autoWriteTimestamp = '.($timeCreateFieldType=='int'?'true':("'".$timeCreateFieldType."'")).';';
+    }    
+    {/php}
+        
+    public function del($arr,$istrue=false){
+    	
+    	if($istrue){
+    	
+    		${$Think.get.table}=new {$Think.get.table|ucfirst};
+    		return ${$Think.get.table}->where($arr)->delete();
+    		 
+    	}else
+    		return {$Think.get.table|ucfirst}::destroy($arr);
+    	    	
+    }
+    
+    public function restore($where){
+    
+    		${$Think.get.table}=new {$Think.get.table|ucfirst};
+    		return ${$Think.get.table}->restore($where);
+    }
+        
+    public function getByLimit($where='1=1',$order='{$pk} desc',$limit=0,$onlyTrashed=false){
+    
+    	$list=null;
+    	
+    	$where = empty($where)?'1=1':$order;
+    	$order = empty($order)?'{$pk} desc':$order;
+    	
+    	if(!$onlyTrashed){
+    	
+	    	if($limit>0)
+	    		$list=$this->where($where)->order($order)->limit($limit)->select();
+	    	else
+	    		$list=$this->where($where)->order($order)->select();
+	    		
+	    }else{
+	    
+	    	if($limit>0)
+	    		$list={$Think.get.table|ucfirst}::onlyTrashed()->where($where)->order($order)->limit($limit)->select();
+	    	else
+	    		$list={$Think.get.table|ucfirst}::onlyTrashed()->where($where)->order($order)->select();
+	    	
+	    }
+    		
+    	return $list;    
+    		
     }
     
     
-    {/php}
+    public function getByPage($where='1=1',$order='{$pk} desc',$pagesize=10,$cache=false,$onlyTrashed=false){
+    
+    	$list=null;
+    	
+    	$where = empty($where)?'1=1':$where;
+    	$order = empty($order)?'{$pk} desc':$order;
+    	
+    	if(!$onlyTrashed){
+    	
+	    	if($pagesize>0)
+	    		$list=$this->where($where)->order($order)->cache($cache)->paginate($pagesize);
+	    	else
+	    		$list=$this->where($where)->order($order)->cache($cache)->select();
+	    		
+    	}else{
+    	
+    	    if($pagesize>0)
+	    		$list={$Think.get.table|ucfirst}::onlyTrashed()->where($where)->order($order)->cache($cache)->paginate($pagesize);
+	    	else
+	    		$list={$Think.get.table|ucfirst}::onlyTrashed()->where($where)->order($order)->cache($cache)->select();	
+    	
+    	}	
+    	return $list;
+    }
+    
+    public function getByKeyword($keyword='',$order='{$pk} desc',$pagesize=10,$cache=false){
+    
+    	$list=null;
+    	
+    	$where = '1=1';
+    	if($keyword!='')
+    		$where .= "{$wheresql}";
+    		
+    	$order = empty($order)?"{$pk} desc":$order;
+    	$cach = empty($cach)?'def':$cach;
+    	
+    	if($pagesize>0)
+    		$list=$this->where($where)->order($order)->cache($cache)->paginate($pagesize);
+    	else
+    		$list=$this->where($where)->order($order)->cache($cache)->select();
+    		
+    	return $list;    
+    }
 }
 
 </pre>

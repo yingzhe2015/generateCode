@@ -15,11 +15,11 @@ return [
     // 服务器地址
     'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => 'heebbs',
+    'database'        => 'mm',
     // 用户名
     'username'        => 'root',
     // 密码
-    'password'        => 'W818Hw818dc99wf0z6qi208lt',
+    'password'        => 'J7QXHj7qxe6u5pbyjmptalu22',
     // 端口
     'hostport'        => '',
     // 连接dsn

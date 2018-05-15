@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>TP5代码生成工具-{block name="title"}{/block}</title>
-  {css href="/public/static/css/bootstrap.css,/public/static/css/default.css"/}
+  {css href="/static/css/bootstrap.css"/}
 </head>
 <body>
 
@@ -18,16 +18,16 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li>
-							 <a href="{:url('index/page_model_step1')}">模型</a>
+							 <a href="{:url('index/page_model_step1')}">生成模型</a>
 						</li>
 						<li>
-							 <a href="{:url('index/page_controller_step1')}">控制器</a>
+							 <a href="{:url('index/page_controller_step1')}">生成控制器</a>
 						</li>
 						<li>
-							 <a href="{:url('index/page_validata_step1')}">验证器</a>
+							 <a href="{:url('index/page_validata_step1')}">生成验证器</a>
 						</li>
 						<li  class="dropdown">
-							 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">表单生成器<span class="caret"></span></a>
+							 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">生成表单<span class="caret"></span></a>
 							 <ul class="dropdown-menu">
 							 	<li><a href="{:url('page_form_step1')}">编辑表单生成</a></li>
 							 	<li class="divider"></li>
@@ -99,7 +99,7 @@
 
   
 </body>
-{js href="/public/static/js/jquery.min.js,/public/static/js/bootstrap.js,/public/static/js/default.js"/}
+{js href="/static/js/jquery.min.js,/static/js/bootstrap.js"/}
 
 {block name="script"}{/block}
 

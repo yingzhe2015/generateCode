@@ -5,7 +5,7 @@
 <h3>模型生成 - 步骤1</h3>
 <form action="{:url('page_model_step2')}" method="get">
 选择表：
-<select name="table">
+<select name="table" id="table" onchange="loadfileds()">
 <option value=""></option>
 {volist name="tables" id="vo"}
 <option value="{$vo}" {eq name="Think.get.table" value="$vo"}selected{/eq}>{$vo}</option>
@@ -13,14 +13,65 @@
 </select>
 
 <br><br>
-<input type="checkbox" name="autotimpspan" id="autotimpspan"><label for="autotimpspan">自动生成创建修改时间</label>
-
+<input type="checkbox" name="autotimpspan" id="autotimpspan" onclick="if($(this).is(':checked')){$('#autotimespan').show();}else{$('#autotimespan').hide();}"><label for="autotimpspan">自动生成创建/修改时间</label>
+<span id="autotimespan">
+	<br>
+	创建时间字段：
+	<select name="autotimeCreateFiled" id="autotimeCreateFiled">
+	</select>
+	<br>
+	修改时间字段：
+	<select name="autotimeUpdateFiled" id="autotimeUpdateFiled">
+	</select>
+	<br>
+</span>
 <br>
-<input type="checkbox" name="softdelete" id="softdelete"><label for="softdelete">软删除</label>
-
+<input type="checkbox" name="softdelete" id="softdelete" onclick="if($(this).is(':checked')){$('#softdeletefiled').show();}else{$('#softdeletefiled').hide();}"><label for="softdelete">软删除</label>
+<select name="softdeletefiled" id="softdeletefiled">
+</select>
 <br><br>
 <input type="submit" value="提交">
 </form>
 
 
+{/block}
+{block name="script"}
+<script>
+$(function(){
+	$('#autotimespan').hide();
+	$('#softdeletefiled').hide();
+})
+
+function loadfileds(){
+	var tb = $('#table').val();
+	$.ajax({
+		url:"{:url('ajax/getcolumns')}?table="+tb,
+		success:function(result){
+			$('#autotimeCreateFiled').html('');
+			$('#autotimeUpdateFiled').html('');
+			$('#softdeletefiled').html('');
+			result.forEach(
+					function(item,index){						
+						if(item.Type.indexOf('int')==0||item.Type.indexOf('datetime')==0||item.Type.indexOf('timestamp')==0){
+							
+							var cf = (item.Field.indexOf('create')>-1||item.Field.indexOf('ctime')>-1||item.Field.indexOf('create_time')>-1)?' selected ':'';
+							var uf = (item.Field.indexOf('update')>-1||item.Field.indexOf('update_time')>-1)?' selected ':'';
+							
+							$('#autotimeCreateFiled').append("<option value='"+item.Field+"'"+cf+">"+item.Field+"</option>");
+							$('#autotimeUpdateFiled').append("<option value='"+item.Field+"'"+uf+">"+item.Field+"</option>");
+							
+						}
+						if(item.Type.indexOf('int')==0){
+													
+							var df = (item.Field.indexOf('delete')>-1||item.Field.indexOf('delete_time')>-1||item.Field.indexOf('dtime')>-1)?' selected ':'';
+							$('#softdeletefiled').append("<option value='"+item.Field+"'"+df+">"+item.Field+"</option>");
+							
+						}
+							
+					}
+			)
+    	}})
+}
+
+</script>
 {/block}

@@ -4,7 +4,7 @@ namespace app\index\controller;
 class Index extends Base
 {    
     public function index()
-    {        
+    {
         return view();
     }
     
@@ -14,11 +14,13 @@ class Index extends Base
         return view();
     }
     
-    public function page_model_step2($table,$autotimpspan='',$softdelete=''){
+    public function page_model_step2($table,$autotimpspan='',$softdelete='',$autotimeCreateFiled='',$autotimeUpdateFiled='',$softdeletefiled=''){
         if($table==''){
             $this->error('缺少表');
             return;
         }
+        
+        
         //$table=input('get.table');
         //$autotimpspan=input('get.autotimpspan');
         //$softdelete=input('get.softdelete');
@@ -35,30 +37,76 @@ class Index extends Base
             $issoftdelete = false;
             $msg = '';
             
+            $timeCreateFieldType = '';
+            $timeUpdateFieldType = '';
+            $softDeleteFielType = '';
+            
             foreach ($cls as $c){
-                if($c['Field']=='create_time'&&!$istimestartfiled)
+                if(($c['Field']=='create_time'&&!$istimestartfiled)||($c['Field']==$autotimeCreateFiled&&!$istimestartfiled)){
                     $istimestartfiled= true;
-                if($c['Field']=='update_time'&&!$istimeendfiled)
+                    $timeCreateFieldType = $c['Type'];
+                }
+                if(($c['Field']=='update_time'&&!$istimeendfiled)||($c['Field']==$autotimeUpdateFiled&&!$istimeendfiled)){
                     $istimeendfiled= true;
-                if($c['Field']=='delete_time'&&!$issoftdelete)
+                    $timeUpdateFieldType = $c['Type'];
+                }
+                if(($c['Field']=='delete_time'&&!$issoftdelete)||(!empty(trim($softdeletefiled))&&!$issoftdelete)){
                     $issoftdelete = true;
+                    $softDeleteFielType = $c['Type'];
+                }
             }
             
             if($autotimpspan=='on'){
-                if($istimeendfiled&&$istimeendfiled){
+                if($istimestartfiled&&$istimeendfiled){
+                    
+                    if(($autotimeCreateFiled==$autotimeUpdateFiled)){
+                        $this->error('创建时间/修改时间    字段不能相同');
+                        return;
+                    }
+                    
+                    if(!((startWith($timeCreateFieldType,'int')&&startWith($timeUpdateFieldType,'int'))||(startWith($timeCreateFieldType,'datetime')&&startWith($timeUpdateFieldType,'datetime'))||(startWith($timeCreateFieldType,'timestamp')&&startWith($timeUpdateFieldType,'timestamp')))){
+                        $this->error('创建时间/更新时间字段必须为int、datetime、timestamp类型，且必须一致！');
+                        exit;
+                    }
+                    
                     $istimefiled=true;
                     $this->assign('autotime',$istimefiled);
+                    $this->assign('timeCreateFieldType',$timeCreateFieldType);
                 }else
                     $msg='表'.$table.'缺少字段：默认创建时间字段为create_time，更新时间字段为update_time，默认识别为整型int类型';
             }
             
             if($softdelete=='on'){
-                if($issoftdelete)
+                if($issoftdelete){
+                    
+                    if($autotimpspan=='on'&&(($autotimeCreateFiled==$softdeletefiled)||($autotimeUpdateFiled==$softdeletefiled))){
+                        $this->error('创建时间/修改时间/删除时间    字段不能相同');
+                        return;
+                    }
+                    
                     $this->assign('softdelete',$softdelete);
-                else
+                    $this->assign('delfield',empty($softdeletefiled)?'delete_time':$softdeletefiled);
+                    $this->assign('softDeleteFielType',$softDeleteFielType);
+                }else
                     $msg.='<br>表'.$table.'缺少字段：软删除的默认字段为 delete_time，可根据实际情况在代码中修改';
             }
             
+            $key ='';
+            $wheresql = '';
+            if($table!=''){
+                
+                $cls = $this->columns($table);//print_r($cls);exit;
+                foreach ($cls as $c){
+                    if($c['Key']=='PRI')
+                        $key = $c['Field'];
+                        if(strstr($c['Type'],'varchar')!=''){
+                            $wheresql.=" and ".$c['Field']." like binary '%\$keyword%' ";
+                        }
+                }
+                
+            }
+            $this->assign('wheresql',$wheresql);
+            $this->assign('pk',$key);
             $this->assign('msg',$msg);
         }
                 
